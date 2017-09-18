@@ -19,6 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::prefix('v1/license-manager')->group(function () {
-    Route::get('info', 'Api\V1\LicenseController@info');
-    Route::get('get', 'Api\V1\LicenseController@get');
+    Route::get('info', 'Api\V1\LicenseManagerController@info');
+    Route::get('get', 'Api\V1\LicenseManagerController@get');
 });

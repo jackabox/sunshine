@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\License;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class LicenseController extends Controller
      */
     public function index()
     {
-        return view('admin.licenses.index');
+        $licenses = License::all();
+
+        return view('admin.licenses.index')
+                    ->with('licenses', $licenses);
     }
 
     /**
