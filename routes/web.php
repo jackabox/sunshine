@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/repos', function() {
-    return view('repos');
+
+Route::prefix('admin')->group(function () {
+    Route::get('licenses', 'Admin\LicenseController@index');
+    Route::get('get', 'Api\V1\LicenseController@get');
 });
