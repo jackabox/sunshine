@@ -35,6 +35,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
+                    <a class="nav-item nav-link active" href="/admin/products">Products</a>
                     <a class="nav-item nav-link active" href="/admin/licenses">License</a>
                 </div>
             </div>
@@ -44,6 +45,9 @@
     <br>
 
     <div class="container">
+        <h1>@yield('title')</h1>
+        <br>
+
         @yield('content')
     </div>
 </body>
