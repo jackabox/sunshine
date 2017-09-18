@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::prefix('v1/license-manager')->group(function () {
+    Route::get('info', 'Api\V1\LicenseController@info');
+    Route::get('get', 'Api\V1\LicenseController@get');
+});
