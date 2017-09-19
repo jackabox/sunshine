@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Product;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\GitHubController;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -28,7 +29,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $repos = new GitHubController();
+        $repos = $repos->getRepositories();
+
+        return view('admin.products.create')
+                    ->with('repos', $repos);
     }
 
     /**

@@ -29,4 +29,6 @@ Route::prefix('admin')->group(function () {
     ]);
 
     Route::get('get', 'Api\V1\LicenseController@get');
+
+    Route::post('github/releases', 'GitHubController@ajaxReleases');
 });
