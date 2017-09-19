@@ -26,8 +26,8 @@
 
         <div class="form-group">
             <select name="public" class="form-control">
-                <option value="1">Public</option>
-                <option value="0">Hidden</option>
+                <option value="1" {{ old('public') == 1 ? 'selected' : '' }}>Public</option>
+                <option value="0" {{ old('public') == 0 ? 'selected' : '' }}>Hidden</option>
             </select>
         </div>
 
