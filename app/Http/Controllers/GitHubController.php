@@ -96,7 +96,11 @@ class GitHubController extends Controller
     {
         $original = public_path() . "/tmp/dl/{$filename}.zip";
         $rootPath = public_path() . '/tmp/extract/' . $filename;
-        $destination = public_path() . '/downloads/' . $filename . '/' $filename . '-' . $release . '.zip';
+        $destination = public_path() . "/downloads/{$filename}/{$filename}-{$release}.zip";
+
+        if (! is_dir(public_path() . "/downloads/{$filename}/")) {
+            mkdir(public_path() . "/downloads/{$filename}/");
+        }
 
         $zip = new \ZipArchive;
         $zip->open($original);
