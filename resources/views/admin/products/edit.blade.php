@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Products - Add')
+@section('title', 'Products - Edit')
 
 @section('content')
 
@@ -17,11 +17,11 @@
 
     <form class="" action="/admin/products" method="post">
         <div class="form-group">
-            <input type="text" name="title" placeholder="Title" class="form-control">
+            <input type="text" name="title" placeholder="Title" class="form-control" value="{{ $product->name }}">
         </div>
 
         <div class="form-group">
-             <textarea name="description" placeholder="Description" rows="10" class="form-control"></textarea>
+             <textarea name="description" placeholder="Description" rows="10" class="form-control">{{ $product->description }}</textarea>
         </div>
 
         <div class="form-group">

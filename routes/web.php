@@ -20,7 +20,12 @@ Route::prefix('admin')->group(function () {
     Route::get('licenses', 'Admin\LicenseController@index');
 
     Route::resource('products', 'Admin\ProductController', [
-        'names' => ['create' => 'admin.products.create'] 
+        'names' => [
+            'index' => 'admin.products.index',
+            'create' => 'admin.products.create',
+            'edit' => 'admin.products.edit',
+
+        ]
     ]);
 
     Route::get('get', 'Api\V1\LicenseController@get');

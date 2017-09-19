@@ -39,7 +39,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        echo 'store form';
+        $request->validate([
+            'title'         => 'required|max:255',
+            'description'   => 'required'
+        ]);
+
+        // $request->description;
+        $product = new Product();
+        $product->name = $request->title;
+        $product->description = $request->description;
+        $product->public = $request->public;
+        $product->save();
+
+        return redirect()->route('admin.products.edit', $product->id);
     }
 
     /**
@@ -50,7 +62,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        echo 'showing ' . $id;
+
     }
 
     /**
@@ -61,7 +73,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        echo 'editing ' . $id;
+        $product = Product::where('id', '=', $id)->first();
+
+        return view('admin.products.edit')
+                ->with('product', $product);
     }
 
     /**

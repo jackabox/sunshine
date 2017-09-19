@@ -19,7 +19,7 @@
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->public }}</td>
                         <td>{{ $product->created_at }}</td>
-                        <td><a href="#" class="btn brn--small btn-primary">View</a></td>
+                        <td><a href="{{ route('admin.products.edit', $product->id) }}" class="btn brn--small btn-primary">View</a></td>
                     </tr>
                 @endforeach
             </tbody>
