@@ -53,10 +53,11 @@ class GitHubController extends Controller
         $release = $_POST['release'];
 
         $release = $this->client->api('repo')->releases()->show($this->user, $repo, $release);
-        $this->getDownloadFile($_POST['repo'], $release['zipball_url']);
-        echo $this->organizeZip($_POST['repo']);
-        die();
+        $version = str_replace(' ', '-', $release['tag_name']);
 
+        $this->getDownloadFile($_POST['repo'], $release['zipball_url']);
+        echo $this->organizeZip($_POST['repo'], $version);
+        die();
     }
 
     private function downloadFile($filename, $url) {
@@ -91,11 +92,11 @@ class GitHubController extends Controller
     /*
         downloads the zips, extracts it, names it properly, compiles and moves to a better location.
     */
-    private function organizeZip($filename)
+    private function organizeZip($filename, $release)
     {
         $original = public_path() . "/tmp/dl/{$filename}.zip";
         $rootPath = public_path() . '/tmp/extract/' . $filename;
-        $destination = public_path() . '/downloads/plugins/' . $filename . '.zip';
+        $destination = public_path() . '/downloads/plugins/' . $filename . '/' $filename . '-' . $release . '.zip';
 
         $zip = new \ZipArchive;
         $zip->open($original);
@@ -112,6 +113,7 @@ class GitHubController extends Controller
         $this->createZip($rootPath, $destination);
 
         // delete the old files
+        $this->deleteTmpZip($original);
         $this->deleteFiles($rootPath);
 
         return $destination;
@@ -149,6 +151,11 @@ class GitHubController extends Controller
         }
 
         return $zip->close();
+    }
+
+    private function deleteTmpZip($file)
+    {
+        unlink($file);
     }
 
     private function deleteFiles($dir)
