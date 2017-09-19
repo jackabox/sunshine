@@ -56,7 +56,14 @@ class GitHubController extends Controller
         $version = str_replace(' ', '-', $release['tag_name']);
 
         $this->getDownloadFile($_POST['repo'], $release['zipball_url']);
-        echo $this->organizeZip($_POST['repo'], $version);
+        $file_details = $this->organizeZip($_POST['repo'], $version);
+
+        $data = [
+            'version'   => $version
+        ];
+
+        $data = array_merge($data, $file_details);
+        echo json_encode($data);
         die();
     }
 
@@ -83,7 +90,7 @@ class GitHubController extends Controller
 
     private function getDownloadFile($filename, $url) {
         if (! file_exists(public_path() . '/tmp/dl/' . $filename)) {
-            $this->downloadFile('contact-form', $url, env('GITHUB_TOKEN'));
+            $this->downloadFile($filename, $url, env('GITHUB_TOKEN'));
         }
 
         return public_path() . "/tmp/dl/{$filename}.zip";
@@ -96,7 +103,9 @@ class GitHubController extends Controller
     {
         $original = public_path() . "/tmp/dl/{$filename}.zip";
         $rootPath = public_path() . '/tmp/extract/' . $filename;
-        $destination = public_path() . "/downloads/{$filename}/{$filename}-{$release}.zip";
+        $file_path = public_path() . "/downloads/{$filename}/";
+        $file_name = "{$filename}-{$release}.zip";
+        $destination = $file_path . $file_name;
 
         if (! is_dir(public_path() . "/downloads/{$filename}/")) {
             mkdir(public_path() . "/downloads/{$filename}/");
@@ -120,7 +129,10 @@ class GitHubController extends Controller
         $this->deleteTmpZip($original);
         $this->deleteFiles($rootPath);
 
-        return $destination;
+        return [
+            'file_name' => $file_name,
+            'file_path' => $file_path
+        ];
     }
 
     private function createZip($source, $destination)

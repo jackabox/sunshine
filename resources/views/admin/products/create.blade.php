@@ -59,6 +59,10 @@
             <button type="button" id="fetch_repo_files" class="btn btn-primary">fetch repo</button>
         </div>
 
+        <input type="hidden" id="file_path" name="file_path">
+        <input type="hidden" id="file_name" name="file_name">
+        <input type="hidden" id="file_version" name="file_version">
+
         {{ csrf_field() }}
 
         <button type="submit" class="btn btn-primary">Save</button>

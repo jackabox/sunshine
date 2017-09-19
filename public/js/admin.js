@@ -115,10 +115,23 @@ $(document).on('click', '#fetch_repo_files', function () {
             'repo': $('#github_repo option:checked').val(),
             'release': $('#github_release option:checked').val()
         },
-        before: function before() {
-            button.html('fetching..');
+        beforeSend: function beforeSend() {
+            button.html('Fetching..');
         },
-        success: function success(response) {}
+        success: function success(response) {
+            var item = $.parseJSON(response);
+
+            console.log(response);
+
+            $('#file_name').val(item.file_name);
+            $('#file_path').val(item.file_name);
+            $('#file_version').val(item.version);
+
+            button.html('Fetched');
+        },
+        complete: function complete() {
+            button.html('Fetch');
+        }
     });
 });
 
