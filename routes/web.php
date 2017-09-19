@@ -20,3 +20,9 @@ Route::prefix('admin')->group(function () {
     Route::get('licenses', 'Admin\LicenseController@index');
     Route::get('get', 'Api\V1\LicenseController@get');
 });
+
+Route::get('documentation', 'DocumentationController@index');
+Route::get('documentation/{id}', 'DocumentationController@docs');
+
+Route::prefix('documentation')->group(function () {
+});
