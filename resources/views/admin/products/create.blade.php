@@ -57,7 +57,6 @@
 
         <div class="form-group">
             <button type="button" id="fetch_repo_files" class="btn btn-primary">fetch repo</button>
-
         </div>
 
         {{ csrf_field() }}

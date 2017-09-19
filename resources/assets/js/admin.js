@@ -1,4 +1,4 @@
- $(document).on('change', '#github_repo', function() {
+$(document).on('change', '#github_repo', function() {
     $.ajax({
         type: 'POST',
         url: '/admin/github/releases',
@@ -24,4 +24,25 @@
     });
 
     $('input[name=github_folder]').attr('placeholder', $(this).val());
+});
+
+$(document).on('click', '#fetch_repo_files', function() {
+    var button = $(this);
+    $.ajax({
+       type: 'POST',
+       url: '/admin/github/release/download',
+       headers: {
+           'X-CSRF-TOKEN': $('input[name="_token"]').val()
+       },
+       data: {
+           'repo': $('#github_repo option:checked').val(),
+           'release': $('#github_release option:checked').val()
+       },
+       before: function() {
+           button.html('fetching..');
+       },
+       success: function(response) {
+
+       }
+    });
 });
