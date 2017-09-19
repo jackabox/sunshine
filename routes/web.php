@@ -18,7 +18,20 @@ Route::get('/', function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('licenses', 'Admin\LicenseController@index');
+
+    Route::resource('products', 'Admin\ProductController', [
+        'names' => [
+            'index' => 'admin.products.index',
+            'create' => 'admin.products.create',
+            'edit' => 'admin.products.edit',
+
+        ]
+    ]);
+
     Route::get('get', 'Api\V1\LicenseController@get');
+
+    Route::post('github/releases', 'GitHubController@ajaxReleases');
+    Route::post('github/release/download', 'GitHubController@ajaxFetchFiles');
 });
 
 Route::get('documentation', 'DocumentationController@index');

@@ -75,7 +75,52 @@ module.exports = __webpack_require__(2);
 /* 1 */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/jackwhiting/Sites/websites/sunshine/resources/assets/js/admin.js'\n    at Error (native)");
+$(document).on('change', '#github_repo', function () {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/github/releases',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        data: {
+            'repo': $(this).children('option:checked').val()
+        },
+        success: function success(response) {
+            var items = $.parseJSON(response);
+            var select = $('#github_release');
+            select.empty();
+
+            if (items.length > 0) {
+                $.each(items, function (i, item) {
+                    select.append('<option value="' + item.id + '">' + item.name + '</option>');
+                });
+            } else {
+                select.append('<option value="">Repo has no releases</option>');
+            }
+        }
+    });
+
+    $('input[name=github_folder]').attr('placeholder', $(this).val());
+});
+
+$(document).on('click', '#fetch_repo_files', function () {
+    var button = $(this);
+    $.ajax({
+        type: 'POST',
+        url: '/admin/github/release/download',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        data: {
+            'repo': $('#github_repo option:checked').val(),
+            'release': $('#github_release option:checked').val()
+        },
+        before: function before() {
+            button.html('fetching..');
+        },
+        success: function success(response) {}
+    });
+});
 
 /***/ }),
 /* 2 */
