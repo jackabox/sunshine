@@ -94,8 +94,16 @@ class ProductController extends Controller
     {
         $product = Product::where('id', '=', $id)->first();
 
+        $github = new GitHubController();
+        $repos = $github->getRepositories();
+        $latest = $product->releases()->orderby('created_at', 'desc')->first();
+        $releases = $github->getReleases('adtrak', $latest->repo_name);
+
         return view('admin.products.edit')
-                ->with('product', $product);
+                ->with('repos', $repos)
+                ->with('product', $product)
+                ->with('releases', $releases)
+                ->with('latest_release', $latest);
     }
 
     /**
