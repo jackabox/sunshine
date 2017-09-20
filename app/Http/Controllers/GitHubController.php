@@ -51,12 +51,13 @@ class GitHubController extends Controller
         // $this->getDownloadFile();
         $repo = $_POST['repo'];
         $release = $_POST['release'];
+        $folder = (isset($_POST['folder']) && $_POST['folder'] != '') ? $_POST['folder'] : $_POST['repo'];
 
         $release = $this->client->api('repo')->releases()->show($this->user, $repo, $release);
         $version = str_replace(' ', '-', $release['tag_name']);
 
         $this->getDownloadFile($_POST['repo'], $release['zipball_url']);
-        $file_details = $this->organizeZip($_POST['repo'], $version);
+        $file_details = $this->organizeZip($_POST['repo'], $folder, $version);
 
         $data = [
             'version'   => $version
@@ -99,10 +100,10 @@ class GitHubController extends Controller
     /*
         downloads the zips, extracts it, names it properly, compiles and moves to a better location.
     */
-    private function organizeZip($filename, $release)
+    private function organizeZip($filename, $folder, $release)
     {
         $original = public_path() . "/tmp/dl/{$filename}.zip";
-        $rootPath = public_path() . '/tmp/extract/' . $filename;
+        $rootPath = public_path() . '/tmp/extract/' . $folder;
         $file_path = public_path() . "/downloads/{$filename}/";
         $file_name = "{$filename}-{$release}.zip";
         $destination = $file_path . $file_name;
@@ -142,7 +143,7 @@ class GitHubController extends Controller
         if (! $zip->open($destination, \ZipArchive::CREATE))
             return false;
 
-        $source = str_replace('\\', '/', realpath($source));
+        $source = str_replace('\\', '/', realpath(dirname($source)));
 
         if (is_dir($source) === true) {
             $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source), \RecursiveIteratorIterator::SELF_FIRST);

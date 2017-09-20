@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Product;
+use App\Release;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\GitHubController;
 use Illuminate\Http\Request;
@@ -55,6 +56,19 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->public = $request->public;
         $product->save();
+
+        if (isset($request->file_name) && $request->file_name != '') {
+            $url = (explode("public/", $request->file_path));
+            $url = url('/' . $url[1]);
+
+            $release = new Release();
+            $release->product_id = $product->id;
+            $release->version = $request->file_version;
+            $release->src = 'GitHub';
+            $release->file_url = $url;
+            $release->file_name = $request->file_name;
+            $release->save();
+        }
 
         return redirect()->route('admin.products.edit', $product->id);
     }

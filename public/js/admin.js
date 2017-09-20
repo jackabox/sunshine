@@ -113,7 +113,8 @@ $(document).on('click', '#fetch_repo_files', function () {
         },
         data: {
             'repo': $('#github_repo option:checked').val(),
-            'release': $('#github_release option:checked').val()
+            'release': $('#github_release option:checked').val(),
+            'folder': $('input[name=github_folder]').val()
         },
         beforeSend: function beforeSend() {
             button.html('Fetching..');
@@ -124,7 +125,7 @@ $(document).on('click', '#fetch_repo_files', function () {
             console.log(response);
 
             $('#file_name').val(item.file_name);
-            $('#file_path').val(item.file_name);
+            $('#file_path').val(item.file_path);
             $('#file_version').val(item.version);
 
             button.html('Fetched');
