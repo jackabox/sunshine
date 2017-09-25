@@ -39,3 +39,7 @@ Route::get('documentation/{id}', 'DocumentationController@docs');
 
 Route::prefix('documentation')->group(function () {
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
