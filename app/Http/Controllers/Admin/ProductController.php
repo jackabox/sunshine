@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -97,7 +98,16 @@ class ProductController extends Controller
         $github = new GitHubController();
         $repos = $github->getRepositories();
         $latest = $product->releases()->orderby('created_at', 'desc')->first();
-        $releases = $github->getReleases('adtrak', $latest->repo_name);
+
+        if ($latest) {
+            $releases = $github->getReleases('adtrak', $latest->repo_name);
+        } else {
+            $releases = null;
+            $latest = (object) [
+                'repo_name' => '',
+                'folder_name' => ''
+            ];
+        }
 
         return view('admin.products.edit')
                 ->with('repos', $repos)
