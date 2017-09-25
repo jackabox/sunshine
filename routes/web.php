@@ -11,12 +11,13 @@
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::prefix('admin')->group(function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('licenses', 'Admin\LicenseController@index');
 
     Route::resource('products', 'Admin\ProductController', [
@@ -28,18 +29,14 @@ Route::prefix('admin')->group(function () {
         ]
     ]);
 
-    Route::get('get', 'Api\V1\LicenseController@get');
-
     Route::post('github/releases', 'GitHubController@ajaxReleases');
     Route::post('github/release/download', 'GitHubController@ajaxFetchFiles');
 });
+
+Route::get('get', 'Api\V1\LicenseController@get');
 
 Route::get('documentation', 'DocumentationController@index');
 Route::get('documentation/{id}', 'DocumentationController@docs');
 
 Route::prefix('documentation')->group(function () {
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
