@@ -35,11 +35,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 Route::get('get', 'Api\V1\LicenseController@get');
 
-Route::get('documentation', 'DocumentationController@index');
-Route::get('documentation/{id}', 'DocumentationController@docs');
-
-Route::prefix('documentation')->group(function () {
-});
+Route::get('docs/{p1}/{p2}/{p3?}', 'DocsController@page');
 
 Auth::routes();
 
